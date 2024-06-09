@@ -9,4 +9,7 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
+	<error-page>
+		<location>/error/Accounterr.jsp</location>
+	</error-page>
 </web-app>

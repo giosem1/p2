@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,it.unisa.model.*"%>
+    pageEncoding="ISO-8859-1" import="java.util.*,it.unisa.model.*" errorPage="./error/Accounterr.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-	<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
+	<link href="$ {pageContext.request.contextPath}/css/style.css" rel="stylesheet" type="text/css">
 
 <title>Account</title>
 </head>
@@ -77,7 +77,7 @@
 					<li>Indirizzo: <%=spedizione.getIndirizzo() %></li>
 					<li>Cap: <%=spedizione.getCap() %></li>
 					<li>Provincia: <%=spedizione.getProvincia() %></li>
-					<li>Città: <%=spedizione.getCittà() %></li>
+					<li>Città: <%=spedizione.getCitta() %></li>
 					<li><a href="account?action=removeS"><button>Rimuovi</button></a></li>
 				</ul>
 				
