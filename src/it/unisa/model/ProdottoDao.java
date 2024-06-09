@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -48,7 +51,7 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 			preparedStatement.setString(2, product.getPiattaforma());
 			preparedStatement.setString(3, product.getDescrizione());
 			preparedStatement.setDouble(4, product.getPrezzo());
-			preparedStatement.setInt(5, product.getQuantità());
+			preparedStatement.setInt(5, product.getQuantita());
 			preparedStatement.setString(6,product.getGenere());
 			preparedStatement.setString(7, product.getDataUscita());
 			preparedStatement.setBoolean(8, product.isInVendita());
@@ -92,7 +95,7 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 				bean.setNome(rs.getString("NOME"));
 				bean.setDescrizione(rs.getString("DESCRIZIONE"));
 				bean.setPrezzo(rs.getDouble("PREZZO"));
-				bean.setQuantità(rs.getInt("QUANTITA"));
+				bean.setQuantita(rs.getInt("QUANTITA"));
 				bean.setPiattaforma(rs.getString("PIATTAFORMA"));
 				bean.setIva(rs.getString("IVA"));
 				bean.setDataUscita(rs.getString("DATA_USCITA"));
@@ -152,9 +155,10 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 		ArrayList<ProdottoBean> products = new ArrayList<ProdottoBean>();
 
 		String selectSQL = "SELECT * FROM " + ProdottoDao.TABLE_NAME;
-
-		if (order != null && !order.equals("")) {
-			selectSQL += " ORDER BY " + order;
+		Set<String> allowedOrderColumns = new HashSet<>(Arrays.asList("id_ordine", "stato", "data_ordine","email","importo_totale","carta_credito", "indirizzo", "cap"));
+		
+		if (order != null && allowedOrderColumns.contains(order)) {
+		    	selectSQL += " ORDER BY " + order;
 		}
 
 		try {
@@ -170,7 +174,7 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 				bean.setNome(rs.getString("NOME"));
 				bean.setDescrizione(rs.getString("DESCRIZIONE"));
 				bean.setPrezzo(rs.getDouble("PREZZO"));
-				bean.setQuantità(rs.getInt("QUANTITA"));
+				bean.setQuantita(rs.getInt("QUANTITA"));
 				bean.setPiattaforma(rs.getString("PIATTAFORMA"));
 				bean.setIva(rs.getString("IVA"));
 				bean.setDataUscita(rs.getString("DATA_USCITA"));
@@ -241,7 +245,7 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(updateSQL);
 			preparedStatement.setString(1, product.getNome());
-			preparedStatement.setInt(2, product.getQuantità());
+			preparedStatement.setInt(2, product.getQuantita());
 			preparedStatement.setString(3, product.getPiattaforma());
 			preparedStatement.setString(4, product.getDescrizione());
 			preparedStatement.setDouble(5, product.getPrezzo());
@@ -291,7 +295,7 @@ public class ProdottoDao implements ProdottoDaoInterfaccia{
 				bean.setNome(rs.getString("NOME"));
 				bean.setDescrizione(rs.getString("DESCRIZIONE"));
 				bean.setPrezzo(rs.getDouble("PREZZO"));
-				bean.setQuantità(rs.getInt("QUANTITA"));
+				bean.setQuantita(rs.getInt("QUANTITA"));
 				bean.setPiattaforma(rs.getString("PIATTAFORMA"));
 				bean.setIva(rs.getString("IVA"));
 				bean.setDataUscita(rs.getString("DATA_USCITA"));
