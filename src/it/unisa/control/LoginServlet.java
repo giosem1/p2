@@ -1,6 +1,9 @@
 package it.unisa.control;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -33,13 +36,12 @@ public class LoginServlet extends HttpServlet {
 
 		     UserBean user = new UserBean();
 		     user.setUsername(request.getParameter("un"));
-		     user.setPassword(request.getParameter("pw"));
-		     user = usDao.doRetrieve(request.getParameter("un"),request.getParameter("pw"));
-			   		    
+		     user.setPassword(encode(request.getParameter("pw")));
+		     user = usDao.doRetrieve(request.getParameter("un"),encode(request.getParameter("pw"))); 
 		    
 		     String checkout = request.getParameter("checkout");
 		     
-		     if (user.isValid())
+		     if ( user.isValid())
 		     {
 			        
 		          HttpSession session = request.getSession(true);	    
@@ -60,4 +62,28 @@ public class LoginServlet extends HttpServlet {
 			System.out.println("Error:" + e.getMessage());
 		}
 		  }
+	private static String encode(String input) {
+        try {
+
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            
+
+            byte[] hashBytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
+            
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	}

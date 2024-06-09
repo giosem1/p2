@@ -1,6 +1,9 @@
 package it.unisa.control;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class RegistrazioneServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String dataNascita = request.getParameter("nascita");
 		String username = request.getParameter("us");
-		String pwd = request.getParameter("pw");
+		String pwd = encode(request.getParameter("pw"));
 
         String[] parti = dataNascita.split("-");
         dataNascita = parti[2] + "-" + parti[1] + "-" + parti[0];
@@ -61,5 +64,28 @@ public class RegistrazioneServlet extends HttpServlet {
 		response.sendRedirect(request.getContextPath() + "/Home.jsp");
 
 	}
+	private static String encode(String input) {
+        try {
 
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            
+
+            byte[] hashBytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
+            
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
