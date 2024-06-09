@@ -4,9 +4,17 @@
     <%
 	ArrayList<ArrayList<ProdottoBean>> categorie = (ArrayList<ArrayList<ProdottoBean>>) request.getSession().getAttribute("categorie");
 	if(categorie == null) {
-		response.sendRedirect("./home?page=Home.jsp");	
+			response.sendRedirect("./home?page=Home.jsp");
 		return;
 	}
+	  Set<String> allowedPages = new HashSet<>(Arrays.asList("Home.jsp", "Ps5.jsp", "XboxSeries.jsp", "Switch.jsp", "Ps4.jsp", "XboxOne.jsp"));
+
+	    // Validazione del parametro 'page'
+	    String pagecheck = request.getParameter("page");
+	    if (pagecheck != null && !allowedPages.contains(pagecheck)) {
+	        response.sendRedirect("./home?page=Home.jsp");
+	        return;
+	    }
 %>
 <!DOCTYPE html>
 <html>
